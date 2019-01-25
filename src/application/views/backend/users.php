@@ -119,8 +119,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="provider-last-name"><?= lang('last_name') ?> *</label>
-                                    <input id="provider-last-name" class="form-control required" maxlength="512">
+                                    <label for="provider-last-name"><?= lang('last_name') ?></label>
+                                    <input id="provider-last-name" class="form-control" maxlength="512">
                                 </div>
 
                                 <div class="form-group">
@@ -129,8 +129,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="provider-phone-number"><?= lang('phone_number') ?> *</label>
-                                    <input id="provider-phone-number" class="form-control required" max="128">
+                                    <label for="provider-phone-number"><?= lang('phone_number') ?></label>
+                                    <input id="provider-phone-number" class="form-control" max="128">
                                 </div>
 
                                 <div class="form-group">

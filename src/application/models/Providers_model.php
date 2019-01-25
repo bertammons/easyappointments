@@ -17,7 +17,7 @@
  * Contains the database operations for the service provider users of Easy!Appointments.
  *
  * Data Structure:
- *      'fist_name'
+ *      'first_name'
  *      'last_name' (required)
  *      'email' (required)
  *      'mobile_number'
@@ -80,17 +80,17 @@ class Providers_Model extends CI_Model {
     /**
      * Check whether a particular provider record already exists in the database.
      *
-     * @param array $provider Contains the provider data. The 'email' value is required in order to check for a provider.
+     * @param array $provider Contains the provider data. The 'first_name' value is required in order to check for a provider.
      *
      * @return bool Returns whether the provider record exists or not.
      *
-     * @throws Exception When the 'email' value is not provided.
+     * @throws Exception When the 'first_name' value is not provided.
      */
     public function exists($provider)
     {
-        if ( ! isset($provider['email']))
+        if ( ! isset($provider['first_name']))
         {
-            throw new Exception('Provider email is not provided:' . print_r($provider, TRUE));
+            throw new Exception('Provider first_name is not provided:' . print_r($provider, TRUE));
         }
 
         // This method shouldn't depend on another method of this class.
@@ -98,7 +98,7 @@ class Providers_Model extends CI_Model {
             ->select('*')
             ->from('ea_users')
             ->join('ea_roles', 'ea_roles.id = ea_users.id_roles', 'inner')
-            ->where('ea_users.email', $provider['email'])
+            ->where('ea_users.first_name', $provider['first_name'])
             ->where('ea_roles.slug', DB_SLUG_PROVIDER)
             ->get()->num_rows();
 
@@ -186,24 +186,24 @@ class Providers_Model extends CI_Model {
     /**
      * Find the database record id of a provider.
      *
-     * @param array $provider Contains the provider data. The 'email' value is required in order to find the record id.
+     * @param array $provider Contains the provider data. The 'first_name' value is required in order to find the record id.
      *
      * @return int Returns the record id.
      *
-     * @throws Exception When the provider's email value is not provided.
+     * @throws Exception When the provider's 'first_name' value is not provided.
      */
     public function find_record_id($provider)
     {
-        if ( ! isset($provider['email']))
+        if ( ! isset($provider['first_name']))
         {
-            throw new Exception('Provider email was not provided:' . print_r($provider, TRUE));
+            throw new Exception('Provider first_name was not provided:' . print_r($provider, TRUE));
         }
 
         $result = $this->db
             ->select('ea_users.id')
             ->from('ea_users')
             ->join('ea_roles', 'ea_roles.id = ea_users.id_roles', 'inner')
-            ->where('ea_users.email', $provider['email'])
+            ->where('ea_users.first_name', $provider['first_name'])
             ->where('ea_roles.slug', DB_SLUG_PROVIDER)
             ->get();
 
@@ -240,9 +240,8 @@ class Providers_Model extends CI_Model {
         }
 
         // Validate required fields.
-        if ( ! isset($provider['last_name'])
-            || ! isset($provider['email'])
-            || ! isset($provider['phone_number']))
+        if ( ! isset($provider['first_name'])
+            || ! isset($provider['email']))
         {
             throw new Exception('Not all required fields are provided: ' . print_r($provider, TRUE));
         }
@@ -306,7 +305,7 @@ class Providers_Model extends CI_Model {
                 . '" or "' . CALENDAR_VIEW_TABLE . '", given: ' . $provider['settings']['calendar_view']);
         }
 
-        // When inserting a record the email address must be unique.
+        // When inserting a record the 'first_name' must be unique.
         $provider_id = (isset($provider['id'])) ? $provider['id'] : '';
 
         $num_rows = $this->db
@@ -314,15 +313,15 @@ class Providers_Model extends CI_Model {
             ->from('ea_users')
             ->join('ea_roles', 'ea_roles.id = ea_users.id_roles', 'inner')
             ->where('ea_roles.slug', DB_SLUG_PROVIDER)
-            ->where('ea_users.email', $provider['email'])
+            ->where('ea_users.first_name', $provider['first_name'])
             ->where('ea_users.id <>', $provider_id)
             ->get()
             ->num_rows();
 
         if ($num_rows > 0)
         {
-            throw new Exception('Given email address belongs to another provider record. '
-                . 'Please use a different email.');
+            throw new Exception('Given first_name address belongs to another provider record. '
+                . 'Please use a different first_name.');
         }
 
         return TRUE;
